@@ -1,0 +1,365 @@
+{
+  "totalMark": 22,
+  "wsosSections": {
+    "1": "Work organization and self-management",
+    "2": "Communication and interpersonal skills",
+    "3": "Design Implementation",
+    "4": "Front-End Development",
+    "5": "Back-End Development"
+  },
+  "subCriterions": [
+    {
+      "name": "Design Implementation and User Experience",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "SkillShare Academy branding and color scheme consistently applied",
+          "maxMark": 0.75,
+          "wsosSection": 3,
+          "extraDescription": "Test: Verify purple-orange-cyan color palette is used throughout the application. Check for SkillShare Academy logo and branding elements on header/navigation.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "judgement",
+          "description": "Responsive design quality across different screen sizes",
+          "maxMark": 1.25,
+          "wsosSection": 3,
+          "judgementScoreDescription": [
+            "Poor responsive design with broken layouts on mobile/tablet or desktop-only functionality",
+            "Basic responsiveness with some layout issues on smaller screens but core functionality works",
+            "Good responsive design with proper layout adaptation across screen sizes and intuitive touch interactions",
+            "Excellent responsive design with optimal layouts for all devices, smooth transitions, and enhanced mobile user experience"
+          ]
+        },
+        {
+          "type": "judgement",
+          "description": "Overall visual design quality and user interface consistency",
+          "maxMark": 1.5,
+          "wsosSection": 3,
+          "judgementScoreDescription": [
+            "Poor visual design with inconsistent styling, unclear navigation, and poor visual hierarchy",
+            "Basic design with some consistency but limited visual appeal and occasional usability issues",
+            "Good visual design with consistent styling, clear navigation, and appropriate use of visual elements",
+            "Excellent visual design with outstanding consistency, intuitive navigation, effective visual hierarchy, and polished aesthetics that enhance user experience"
+          ]
+        },
+        {
+          "type": "judgement",
+          "description": "Page layout structure and navigation clarity",
+          "maxMark": 1.5,
+          "wsosSection": 3,
+          "judgementScoreDescription": [
+            "Poor layout structure with confusing navigation and unclear page organization",
+            "Basic layout with functional navigation but some areas lack clear organization or intuitive flow",
+            "Good layout structure with clear navigation patterns and logical page organization",
+            "Excellent layout with intuitive navigation, optimal page organization, and seamless user flow between sections"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Authentication and Session Management",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Login page with required form elements and validation",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Navigate to login page, verify email input, password input, login button, registration link, and explanatory text are present. Check form validation for empty/invalid inputs.",
+          "calculation": {
+            "type": "options",
+            "options": [
+              {
+                "description": "All elements present and validated",
+                "value": 0.5
+              },
+              {
+                "description": "One element missing or not validated",
+                "value": 0.35
+              },
+              {
+                "description": "Two elements missing or not validated",
+                "value": 0.2
+              },
+              {
+                "description": "Three elements missing or not validated",
+                "value": 0.05
+              },
+              {
+                "description": "More than three elements missing  or not validated",
+                "value": 0
+              }
+            ]
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Registration page with all required fields and validation",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Navigate to registration page, verify name, email, password, confirm password fields are present. Test validation for email format, password strength, and matching passwords.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "X-API token storage and persistence in localStorage",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Login successfully, check localStorage contains X-API token. Refresh page, verify user remains authenticated. Close and reopen browser, verify token persists.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Authentication redirects and protected route handling",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Access protected pages without login, verify redirect to login page. After successful login, verify redirect to dashboard. Test logout functionality clears authentication state.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Registration success flow and redirect to login",
+          "maxMark": 0.25,
+          "wsosSection": 4,
+          "extraDescription": "Test: Complete registration form with valid data, verify success message and automatic redirect back to login page.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Dashboard and Data Visualization",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Chart.js credit progress line chart implementation",
+          "maxMark": 1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Navigate to dashboard after login, verify credit earning progress chart displays as line chart showing last 30 days data. Chart should use Chart.js library and display credit accumulation over time.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Chart.js course completion doughnut chart implementation",
+          "maxMark": 1,
+          "wsosSection": 4,
+          "extraDescription": "Test: On dashboard, verify course completion status displays as doughnut chart showing completed vs remaining chapters across all enrolled courses using Chart.js.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Current credit balance and user statistics display",
+          "maxMark": 0.25,
+          "wsosSection": 4,
+          "extraDescription": "Test: Dashboard displays current user credit balance prominently, welcome message with user name, total enrolled courses count, and completed chapters count.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Course Catalog and Enrollment Management",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Course catalog display with all required information",
+          "maxMark": 0.75,
+          "wsosSection": 4,
+          "extraDescription": "Test: Navigate to course catalog, verify each course card displays title, description, difficulty level, total chapters, total credits available, and enrollment status indicator.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Search and filter functionality for courses",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Use search field to filter courses by title/description. Use difficulty filter (Beginner, Intermediate, Advanced) to narrow course results. Verify filtering works correctly.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Course enrollment functionality with visual feedback",
+          "maxMark": 0.75,
+          "wsosSection": 4,
+          "extraDescription": "Test: For non-enrolled course, click 'Enroll' button, verify immediate enrollment and button changes to 'Continue Learning'. Enrolled courses should show 'Continue Learning' button that navigates to course page.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Course Progress and Chapter Management",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Individual course page with progress indicators",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Navigate to course page, verify course title/description, visual progress indicator showing completed/total chapters, and credit progress showing earned/possible credits.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Chapter listing with completion status and actions",
+          "maxMark": 0.75,
+          "wsosSection": 4,
+          "extraDescription": "Test: Course page displays all chapters with title, description, credit value (3-5 credits). Incomplete chapters show 'Mark as Completed' button, completed chapters show 'Chapter Completed' label and 'Share Achievement' button.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Chapter completion with credit addition and status update",
+          "maxMark": 1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Click 'Mark as Completed' on incomplete chapter, verify credits added to user account, button changes to completion label with share button, and progress indicators update immediately.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mentor Booking System",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Mentor session listing with all required information",
+          "maxMark": 0.75,
+          "wsosSection": 4,
+          "extraDescription": "Test: Navigate to mentor booking page, verify each session displays mentor name/expertise, disabled 'View Profile' button, session date/time, duration (1 hour), credit cost (8-15 credits), and 'Book Session' button.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Session booking with credit deduction and status change",
+          "maxMark": 1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Click 'Book Session' on available session, verify credits deducted from user account, session status changes to 'Pending Confirmation', and booking appears in user's booked sessions list.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Real-time polling for booking confirmations every 30 seconds",
+          "maxMark": 1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Book a session, verify status shows 'Pending Confirmation'. Wait 30 seconds and verify polling occurs (network request). Status should update when booking changes to 'confirmed' or 'rejected'.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Booked sessions display with status and session details",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: After booking sessions, verify user's booked sessions list shows status (pending/confirmed/rejected), mentor name, date/time, and credit cost for each booking.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling and User Feedback",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Comprehensive HTTP error handling with user-friendly messages",
+          "maxMark": 1.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Trigger 400, 401, 403, 404, 422, and 500 errors by manipulating API calls. Verify each error displays appropriate user-friendly message and handles the error gracefully without breaking the application.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "401 Unauthorized error handling with redirect to login",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Make API call with invalid/expired token, verify 401 error automatically redirects user to login page and clears authentication state.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Single Page Application Implementation",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "Framework-based SPA routing functionality",
+          "maxMark": 1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Navigate between pages using framework routing, verify URL updates correctly. Reload page at any route, verify same content displays as before reload (except unsaved inputs).",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Modern JavaScript framework implementation",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Verify application is built using a modern JavaScript framework (React, Vue, Angular, Svelte) with appropriate component structure and framework patterns.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Third-party Integration and Advanced Features",
+      "aspects": [
+        {
+          "type": "measurement",
+          "description": "LinkedIn Share Widget integration for chapter achievements",
+          "maxMark": 1,
+          "wsosSection": 4,
+          "extraDescription": "Test: Complete a chapter, click 'Share Achievement' button, verify LinkedIn share widget opens with course title, chapter name, credits earned, and user progress information populated correctly.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        },
+        {
+          "type": "measurement",
+          "description": "Real-time user interface updates and visual feedback",
+          "maxMark": 0.5,
+          "wsosSection": 4,
+          "extraDescription": "Test: Perform actions like enrollment, chapter completion, booking sessions. Verify immediate UI updates, progress indicators change, button states update, and user receives visual confirmation of actions.",
+          "calculation": {
+            "type": "pass-or-fail"
+          }
+        }
+      ]
+    }
+  ]
+}

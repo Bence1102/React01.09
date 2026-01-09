@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Database
+  db:
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=skillshare_academy
+      - MARIADB_ROOT_HOST=%
+      - TZ=Europe/Budapest
+    volumes:
+      - /var/lib/mysql
+      - ../db/skillshare_academy.sql:/docker-entrypoint-initdb.d/skillshare_academy.sql
+
+  # PHPMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 8888:80
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: 'db'
+      PMA_USER: 'root'
+      PMA_PASSWORD: 'root'
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 64M
+
+  # Content Database
+  content-db:
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=content_service
+      - MARIADB_ROOT_HOST=%
+      - TZ=Europe/Budapest
+    volumes:
+      - /var/lib/mysql
+      - ../db/content_service.sql:/docker-entrypoint-initdb.d/content_service.sql
+
+  # Content Service
+  content-service:
+    image: ghcr.io/skillsit-hu/es2025-s17-training-competition-hu-module_c-content-services:latest
+    restart: unless-stopped
+    depends_on:
+      - content-db
+    environment:
+      - DATABASE_URL=mysql://root:root@content-db:3306/content_service
+      - NODE_ENV=production
+      - PORT=5000
+
+  # Backend Solution
+  backend-solution:
+    image: ghcr.io/skillsit-hu/es2025-s17-training-competition-hu-module_c-solution:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+      - content-service
+    ports:
+      - 5000:5000
+    environment:
+      - DATABASE_URL=mysql://root:root@db:3306/skillshare_academy
+      - NODE_ENV=production
+      - PORT=5000
+      - CONTENT_SERVICE_URL=http://content-service:5000
