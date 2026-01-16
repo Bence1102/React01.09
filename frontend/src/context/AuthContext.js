@@ -101,6 +101,7 @@ export function AuthProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
+            console.log("Backend error:", err.response?.data || err.message);
         hibakezeles(err);
       })
       .finally(() => setLoading(false));

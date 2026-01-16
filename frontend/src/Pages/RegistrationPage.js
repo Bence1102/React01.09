@@ -7,10 +7,10 @@ export default function RegistrationPage() {
   const { register, serverError, loading } = useContext(AuthContext);
 
   const [form, setForm] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    cpassword: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -28,8 +28,8 @@ export default function RegistrationPage() {
   function validate() {
     const newErrors = {};
 
-    if (form.fullName.trim() === "") {
-      newErrors.fullName = "A név kötelező";
+    if (form.name.trim() === "") {
+      newErrors.name = "A név kötelező";
     }
 
     if (form.email.trim() === "") {
@@ -44,10 +44,10 @@ export default function RegistrationPage() {
       newErrors.password = "Minimum 6 karakter";
     }
 
-    if (form.confirmPassword === "") {
-      newErrors.confirmPassword = "Jelszó megerősítés kötelező";
-    } else if (form.confirmPassword !== form.password) {
-      newErrors.confirmPassword = "A két jelszó nem egyezik";
+    if (form.cpassword === "") {
+      newErrors.cpassword = "Jelszó megerősítés kötelező";
+    } else if (form.cpassword !== form.password) {
+      newErrors.cpassword = "A két jelszó nem egyezik";
     }
 
     return newErrors;
@@ -59,13 +59,14 @@ export default function RegistrationPage() {
     const newErrors = validate();
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length > 0) return;
+    if (Object.keys(newErrors).length > 0) return; 
 
     
     register({
-      name: form.fullName,
+      name: form.name,
       email: form.email,
       password: form.password,
+      cpassword: form.cpassword,
     });
   }
 
@@ -81,13 +82,13 @@ export default function RegistrationPage() {
           <div className="input-group">
             <label>Név</label>
             <input
-              name="fullName"
-              value={form.fullName}
+              name="name"
+              value={form.name}
               onChange={handleChange}
               placeholder="Név"
             />
-            {errors.fullName && (
-              <div className="field-error">{errors.fullName}</div>
+            {errors.name && (
+              <div className="field-error">{errors.name}</div>
             )}
           </div>
 
@@ -119,14 +120,14 @@ export default function RegistrationPage() {
           <div className="input-group">
             <label>Jelszó megerősítése</label>
             <input
-              name="confirmPassword"
+              name="cpassword"
               type="password"
-              value={form.confirmPassword}
+              value={form.cpassword}
               onChange={handleChange}
               placeholder="Jelszó megerősítése"
             />
-            {errors.confirmPassword && (
-              <div className="field-error">{errors.confirmPassword}</div>
+            {errors.cpassword && (
+              <div className="field-error">{errors.cpassword}</div>
             )}
           </div>
 

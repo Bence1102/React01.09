@@ -22,7 +22,7 @@ export default function App() {
       <Route path="/register" element={<RegistrationPage />} />
 
       
-      <Route element={<ProtectedRoutes />}>
+      <Route /*element={<ProtectedRoutes />}*/  >
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
 
