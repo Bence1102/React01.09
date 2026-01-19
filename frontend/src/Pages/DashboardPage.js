@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import {
   Chart as ChartJS,
@@ -13,90 +13,138 @@ import {
 } from "chart.js";
 import { Line, Doughnut } from "react-chartjs-2";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title
+);
 
 export default function DashboardPage() {
   const { user, loadUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-    loadUser();
-  }, []);
+    const fetchUser = async () => {
+      await loadUser();
+      setLoading(false);
+    };
 
-  const currentuser = user?.user 
-    ? user
-    : {
-      user: { name: "Guest" },
-      stats: { completedChapters: 5, enrolledCourses: 2 },
-      recentActivity: Array.from({ length: 15 }).map((_, i) => ({
-        timestamp: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString(),
-        creditsEarned: Math.floor(Math.random() * 5) + 1,
-      })),
-    };  
+    fetchUser();
+    
+  }, []);
+  if (loading || !user) {
+    return <div>Loading...</div>;
+  }
+
 
   const labels = [];
-  for (let i = 0; i < 30; i++) {
+  for (let index = 0; index < 30; index++) {
     const d = new Date();
-    d.setDate(d.getDate() - (29 - i));
+    d.setDate(d.getDate() - (29 - index));
     labels.push(d.toISOString().split("T")[0]);
   }
 
+
   const creditsByDate = {};
-  currentuser.recentActivity?.forEach(item => {
-    const date = item.timestamp.split("T")[0];
-    creditsByDate[date] = (creditsByDate[date] || 0) + item.creditsEarned;
-  });
+  if (user.recentActivity !== undefined) {
+    user.recentActivity.forEach((item) => {
+      const date = item.timestamp.split("T")[0]; 
+      if (!creditsByDate[date]) {
+        creditsByDate[date] = 0;
+      }
+      creditsByDate[date] += item.creditsEarned;
+    });
+  }
+  console.log("Credits by date:", creditsByDate);
+
+  const dataValues = labels.map((date) => creditsByDate[date] || 0);
+
 
   const data1 = {
-    labels,
+    labels, 
     datasets: [
       {
-        label: "Credits",
-        data: labels.map(date => creditsByDate[date] || 0),
+        labels: "Credits",
+        data: dataValues, 
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
     ],
   };
-
+  console.log("Line chart data:", data1.datasets[0].data);
   const option1 = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
-      title: { display: true, text: "Credit progress (Last 30 days)" },
+      legend: {
+        position: "top",
+        display: false,
+      },
+      title: {
+        display: true,
+        text: "Credit progress (Last 30 days)",
+      },
     },
     scales: {
-      y: { beginAtZero: true, title: { display: true, text: "Credits" } },
-      x: { title: { display: false } },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Credits",
+        },
+      },
+      x: {
+        title: {
+          display: false,
+          text: "Date",
+        },
+      },
     },
   };
 
-  const data2 = {
-    labels: ["Completed chapters", "Enrolled Courses"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [currentuser.stats.completedChapters, currentuser.stats.enrolledCourses],
-        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
-        borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
-        borderWidth: 2,
-      },
-    ],
-  };
+
+ const data2 = {
+  labels: ["Completed chapters", "Enrolled Courses"],
+  datasets: [
+    {
+      label: "Stats",
+      data: [
+        user.stats?.completedChapters || 0,
+        user.stats?.enrolledCourses || 0
+      ],
+      backgroundColor: ["rgba(255, 99, 132, 0.2)","rgba(54, 162, 235, 0.2)"],
+      borderColor: ["rgba(255, 99, 132, 1)","rgba(54, 162, 235, 1)"],
+      borderWidth: 2,
+    },
+  ],
+};
 
   const option2 = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: "bottom" },
-      title: { display: true, text: "Statisztikák" },
+      legend: {
+        position: "bottom",
+      },
+      title: {
+        display: true,
+        text: "Statisztikák",
+      },
     },
   };
 
+  console.log("User:", user);
+  console.log("Recent Activity:", user?.recentActivity);
   return (
     <div style={{ padding: "1rem" }}>
-      <h1>Üdvözöllek, {currentuser.user.name}!</h1>
+      <h1>Üdvözöllek, {user.name || "Felhasználó"}!</h1>
 
       <div style={{ height: "clamp(250px, 40vh, 400px)", marginBottom: "2rem" }}>
         <Line options={option1} data={data1} />

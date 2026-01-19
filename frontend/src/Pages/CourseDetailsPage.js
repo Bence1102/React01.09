@@ -1,30 +1,174 @@
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import "../css/courses.css";
+import { AuthContext } from "../context/AuthContext";
+import { CoursesContext } from "../context/CourseContext";
 
 export default function CourseDetailsPage() {
+  const { selectedCourse, getCourseById, loading, completeChapter } =
+    useContext(CoursesContext);
+  const { loadUser } = useContext(AuthContext);
+  const { state } = useLocation();
   const navigate = useNavigate();
-  const { id } = useParams();
+  const course = state?.course;
+
+  const [sumOfCompletedCredits, setSumOfCompletedCredits] = useState(0);
+  const [countOfCompletedChapters, setCountOfCompletedChapters] = useState(0);
+  const [countOfChapters, setCountOfChapters] = useState(0);
+  const [sumOfCredits, setSumOfCredits] = useState(0);
+
+  useEffect(() => {
+    if (course?.id) {
+      getCourseById(course.id);
+    }
+  }, [course]);
+
+  useEffect(() => {
+    if (selectedCourse?.course) {
+      calculatingProgress();
+    }
+  }, [selectedCourse]);
+
+  function calculatingProgress() {
+    const totalChapters = selectedCourse.course.chapters.length;
+    let completedChapters = 0;
+    let totalCredits = 0;
+    let completedCredits = 0;
+
+    selectedCourse.course.chapters.forEach((ch) => {
+      totalCredits += ch.credits;
+      if (ch.isCompleted) {
+        completedChapters += 1;
+        completedCredits += ch.credits;
+      }
+    });
+
+    setCountOfChapters(totalChapters);
+    setCountOfCompletedChapters(completedChapters);
+    setSumOfCredits(totalCredits);
+    setSumOfCompletedCredits(completedCredits);
+  }
+
+  function markAsComleted(chapterId, isCompleted) {
+    if (!isCompleted) {
+      completeChapter(selectedCourse.course.id, chapterId)
+        .then(() => {
+          loadUser();
+          getCourseById(selectedCourse.course.id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  if (loading || !selectedCourse || !selectedCourse.course) {
+    return <div>Az oldal betöltés alatt</div>;
+  }
 
   return (
-    <div>
-      <h1 className="page-title">CoursesDetails</h1>
-
-      <div className="keret padding block">
-        <button className="keret padding btn" onClick={() => navigate(-1)}>
-          BACK TO COURSES
+    <div className="padding courseone">
+      <div className="keret">
+        <button className="keret padding" onClick={() => navigate(-1)}>
+          Back to course
         </button>
+        <h1>{selectedCourse.course.title}</h1>
+        <p>{selectedCourse.course.description}</p>
+        <p>{selectedCourse.course.difficulty}</p>
 
-        <h2 style={{ marginTop: 18 }}>REACT FUNDAMENTALS (ID: {id})</h2>
-        <p className="muted">Itt jön majd a részletes oldal wireframe alapján.</p>
+        <div className="progress">
+          <div className="chapter-progress keret">
+            <h3>Chapter progress</h3>
+            <div className="progress-container">
+              <div
+                className="progressbar"
+                style={{
+                  background: "grey",
+                  width: `${countOfChapters === 0
+                      ? 0
+                      : (countOfCompletedChapters / countOfChapters) * 100
+                    }%`,
+                }}
+              ></div>
+            </div>
+            <p>
+              {countOfCompletedChapters} of {countOfChapters} chapters completed
+              (
+              {countOfChapters === 0
+                ? 0
+                : (
+                  (countOfCompletedChapters / countOfChapters) *
+                  100
+                ).toFixed(2)}{" "}
+              %)
+            </p>
+          </div>
 
-        <div className="grid2">
-          <div className="keret padding box">CHAPTER PROGRESS (placeholder)</div>
-          <div className="keret padding box">CREDIT PROGRESS (placeholder)</div>
-        </div>
-
-        <div className="keret padding box" style={{ marginTop: 12 }}>
-          CHAPTER LIST (placeholder)
+          <div className="credit-progress keret">
+            <h3>Credit progress</h3>
+            <div className="progress-container">
+              <div
+                className="progressbar"
+                style={{
+                  background: "grey",
+                  width: `${sumOfCredits === 0
+                      ? 0
+                      : (sumOfCompletedCredits / sumOfCredits) * 100
+                    }%`,
+                }}
+              ></div>
+            </div>
+            <p>
+              {sumOfCompletedCredits} of {sumOfCredits} credits earned (
+              {sumOfCredits === 0
+                ? 0
+                : (
+                  (sumOfCompletedCredits / sumOfCredits) *
+                  100
+                ).toFixed(2)}{" "}
+              %)
+            </p>
+          </div>
         </div>
       </div>
+
+      {selectedCourse.course.chapters.map((ch, i) => (
+        <div className="keret chapter" key={i}>
+          <h2 className="nagy alahuzas">
+            Chapter {i + 1}: {ch.title}
+          </h2>
+          <p>{ch.description}</p>
+          <div className="keret nagy szelesseg padding">
+            {ch.credits} credits
+          </div>
+          <button className="inactive" style={{ background: "lightGray" }}>
+            View chapter
+          </button>
+          <button
+            className={`chapter-btn ${ch.isCompleted ? "completed" : "incomplete"}`}
+            onClick={() => {
+              markAsComleted(ch.id, ch.isCompleted);
+            }}
+          >
+            {ch.isCompleted ? "Chapter completed" : "Mark as Completed"}
+          </button>
+          <div>
+            {ch.isCompleted ? (
+              <button
+                className="keret linkedin"
+                onClick={() => {
+                }}
+              >
+                Share achievement in LinkedIn
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      ))}
+
+      <div id="linkedin-share-root">LinkedIn widget</div>
     </div>
   );
 }

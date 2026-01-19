@@ -8,6 +8,8 @@ import CoursesPage from "./Pages/CoursesPage";
 import CourseDetailsPage from "./Pages/CourseDetailsPage";
 import MentorsPage from "./Pages/MentorsPage";
 
+import { CoursesProvider } from "./context/CourseContext";
+
 function ProtectedRoutes() {
   const token = localStorage.getItem("token");
   if (!token) return <Navigate to="/login" replace />;
@@ -16,19 +18,20 @@ function ProtectedRoutes() {
 
 export default function App() {
   return (
+    <CoursesProvider>
     <Routes>
       
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegistrationPage />} />
 
       
-      <Route /*element={<ProtectedRoutes />}*/  >
+      <Route element={<ProtectedRoutes />}>
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
 
           <Route path="dashboard" element={<DashboardPage />} />
 
-          <Route path="courses">
+          <Route path="courses" element={<Outlet />}>
             <Route index element={<CoursesPage />} />
             <Route path=":id" element={<CourseDetailsPage />} />
           </Route>
@@ -38,8 +41,8 @@ export default function App() {
       </Route>
 
       
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
+    </CoursesProvider>
   );
 }
