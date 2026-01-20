@@ -32,7 +32,7 @@ export default function MentorsPage() {
       <div className="keret padding">
         <h1>Mentor Session Booking</h1>
         <p>Book one-on-one session...</p>
-        <div className="keret padding" style={{ background: "lightblue" }}>
+        <div className="keret padding" style={{ background: "darkgray" }}>
           <strong>
             Your Current Balance:{" "}
             {user.creditBalance ? user.creditBalance : 0} Credits
