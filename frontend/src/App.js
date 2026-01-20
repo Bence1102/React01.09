@@ -7,6 +7,8 @@ import DashboardPage from "./Pages/DashboardPage";
 import CoursesPage from "./Pages/CoursesPage";
 import CourseDetailsPage from "./Pages/CourseDetailsPage";
 import MentorsPage from "./Pages/MentorsPage";
+import BookedSessionPage from "./Pages/BookedSessionsPage";
+import NoPage from "./Pages/NoPage";
 
 import { CoursesProvider } from "./context/CourseContext";
 import { MentorProvider } from "./context/MentorContext";
@@ -39,6 +41,9 @@ export default function App() {
                 </Route>
 
                 <Route path="mentors" element={<MentorsPage />} />
+                
+                <Route path= "/bookedsession" element={ <BookedSessionPage/>} />
+                <Route path= "*" element={ <NoPage/>} />
               </Route>
             </Route>
 

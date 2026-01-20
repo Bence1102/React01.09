@@ -1,45 +1,52 @@
-import { createContext, useState, useCallback } from "react";
 import myAxios, { getAuthHeaders } from "../services/api";
+import { createContext,  useState } from "react";
 
 
 export const MentorContext = createContext();
 
-export const MentorProvider = ({ children }) => {
-    const [mentorList, setMentorList] = useState([]);
-    const [loadingMentors, setLoadingMentors] = useState(false);
-    const [error, setError] = useState(null);
 
-    const getMentors = useCallback(async () => {
-        try {
-            setLoadingMentors(true);
-            setError(null);
-
-            const res = await myAxios.get("/mentors/sessions", {
-                headers: getAuthHeaders(),
-            });
-
-            console.log("MENTOR API RESPONSE:", res.data);
-
-            setMentorList(res.data.sessions); 
-        } catch (err) {
-            console.error(err);
-            setError("Mentorok lekérdezése sikertelen");
-        } finally {
-            setLoadingMentors(false);
-        }
-    }, []);
+export function MentorProvider({ children }) {
+  const [mentorList, setMentorList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
 
 
-    return (
-        <MentorContext.Provider
-            value={{
-                mentorList,
-                loadingMentors,
-                error,
-                getMentors,
-            }}
-        >
-            {children}
-        </MentorContext.Provider>
-    );
-};
+  function getMentor() {
+    setLoading(true);
+    myAxios
+      .get("/mentors/sessions", { headers: getAuthHeaders() })
+      .then((response) => {
+        setMentorList(response.data.sessions)
+    
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setLoading(false));
+  }
+
+
+function bookedSession(id){
+ setLoading(true)
+  return  myAxios.post(
+      `/mentors/sessions/${id}/book`,{},
+      {
+        headers: getAuthHeaders(),
+      }
+    )
+    .then((response)=>{
+      return response;
+    })
+    .catch((error)=>{throw error;})
+    .finally(()=>{setLoading(false)});
+}
+
+  
+  return (
+    <MentorContext.Provider
+      value={{ getMentor,mentorList, loading,bookedSession}}
+    >
+      {children}
+    </MentorContext.Provider>
+  );
+}

@@ -1,0 +1,83 @@
+/* ============================
+   MENTOR KÁRTYÁK – KURZUS STÍLUSBAN
+   ============================ */
+
+.mentor-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.mentor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.mentor-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mentor-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mentor-desc {
+  font-size: 14px;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+.mentor-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.mentor-meta-item {
+  font-weight: 600;
+}
+
+.mentor-button {
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: #4f7cff;
+  margin-top: auto;
+}
+
+.mentor-button.inactive {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+}
+
+.mentor-badge {
+  justify-self: start;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  text-transform: capitalize;
+  background: rgba(255, 195, 79, 0.18);
+  color: #ffd18a;
+}

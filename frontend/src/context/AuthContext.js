@@ -11,7 +11,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     loadUser();
-    
   }, []);
 
   function hibakezeles(error) {
