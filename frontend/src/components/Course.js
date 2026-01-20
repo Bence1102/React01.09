@@ -16,7 +16,7 @@ export default function Course({ course }) {
   const totalCredits = course.credits
     ? course.credits
     : course.chapters
-    ? course.chapters.reduce((sum, ch) => sum + ch.credits, 0)
+    ? course.chapters.reduce((sum, ch) => sum + (ch.credits || 0), 0)
     : 0;
 
   return (
@@ -44,10 +44,6 @@ export default function Course({ course }) {
             Chapters: {course.chapters.length}
           </span>
         )}
-
-        <span className="meta-item">
-          Total Credits: <strong>{totalCredits}</strong>
-        </span>
       </div>
 
       <button

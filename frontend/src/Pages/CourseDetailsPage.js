@@ -21,7 +21,7 @@ export default function CourseDetailsPage() {
     if (course?.id) {
       getCourseById(course.id);
     }
-  }, [course]);
+  }, [course.id]);
 
   useEffect(() => {
     if (selectedCourse?.course) {
@@ -36,13 +36,12 @@ export default function CourseDetailsPage() {
     let completedCredits = 0;
 
     selectedCourse.course.chapters.forEach((ch) => {
-      totalCredits += ch.credits;
+      totalCredits += ch.credits || 0;
       if (ch.isCompleted) {
         completedChapters += 1;
         completedCredits += ch.credits;
       }
     });
-
     setCountOfChapters(totalChapters);
     setCountOfCompletedChapters(completedChapters);
     setSumOfCredits(totalCredits);
@@ -133,7 +132,7 @@ export default function CourseDetailsPage() {
       </div>
 
       {selectedCourse.course.chapters.map((ch, i) => (
-        <div className="keret chapter" key={i}>
+        <div className="keret chapter" key={ch.id}>
           <h2 className="nagy alahuzas">
             Chapter {i + 1}: {ch.title}
           </h2>

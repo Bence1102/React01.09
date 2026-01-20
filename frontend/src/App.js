@@ -9,6 +9,8 @@ import CourseDetailsPage from "./Pages/CourseDetailsPage";
 import MentorsPage from "./Pages/MentorsPage";
 
 import { CoursesProvider } from "./context/CourseContext";
+import { MentorProvider } from "./context/MentorContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function ProtectedRoutes() {
   const token = localStorage.getItem("token");
@@ -18,31 +20,32 @@ function ProtectedRoutes() {
 
 export default function App() {
   return (
-    <CoursesProvider>
-    <Routes>
-      
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegistrationPage />} />
+    <AuthProvider>
+      <CoursesProvider>
+        <MentorProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegistrationPage />} />
 
-      
-      <Route element={<ProtectedRoutes />}>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Navigate to="/dashboard" replace />} />
 
-          <Route path="dashboard" element={<DashboardPage />} />
+                <Route path="dashboard" element={<DashboardPage />} />
 
-          <Route path="courses" element={<Outlet />}>
-            <Route index element={<CoursesPage />} />
-            <Route path=":id" element={<CourseDetailsPage />} />
-          </Route>
+                <Route path="courses" element={<Outlet />}>
+                  <Route index element={<CoursesPage />} />
+                  <Route path=":id" element={<CourseDetailsPage />} />
+                </Route>
 
-          <Route path="mentors" element={<MentorsPage />} />
-        </Route>
-      </Route>
+                <Route path="mentors" element={<MentorsPage />} />
+              </Route>
+            </Route>
 
-      
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
-    </CoursesProvider>
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </MentorProvider>
+      </CoursesProvider>
+    </AuthProvider>
   );
 }

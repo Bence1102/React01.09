@@ -1,5 +1,5 @@
 import myAxios, { getAuthHeaders } from "../services/api";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 export const CoursesContext = createContext();
 
@@ -26,10 +26,12 @@ export function CoursesProvider({ children }) {
   }
 
   function getCourseById(id) {
+    console.log(id);
     setLoading(true);
     myAxios
       .get(`/courses/${id}`, { headers: getAuthHeaders() })
       .then((response) => {
+        
         setSelectedCourse(response.data);
       })
       .catch((error) => {
@@ -56,10 +58,8 @@ export function CoursesProvider({ children }) {
 
   function enrollCourse(courseId) {
     setLoading(true);
-    return myAxios
-      .post(
-        `/courses/${courseId}/enroll`,
-        { isEnrolled: true },
+    myAxios.post(
+        `/courses/${courseId}/enroll`,{ isEnrolled: true },
         {
           headers: getAuthHeaders(),
         }
